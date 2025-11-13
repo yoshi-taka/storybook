@@ -50,7 +50,19 @@ jobs:
     name: Core Unit Tests, ${{ matrix.os }}
     if: github.repository_owner != 'storybookjs'
     steps:
-      - uses: actions/checkout@v4
+      - name: Setup Dev Drive (Windows only)
+        if: startsWith(matrix.os, 'windows')
+        id: devdrive
+        uses: samypr100/setup-dev-drive@v4
+      - name: Checkout (Windows → Dev Drive)
+        if: startsWith(matrix.os, 'windows')
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+          path: ${{ steps.devdrive.outputs.dev_drive_workspace }}
+      - name: Checkout (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
