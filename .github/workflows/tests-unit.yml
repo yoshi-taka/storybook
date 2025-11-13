@@ -14,24 +14,28 @@ env:
 jobs:
   build:
     name: Core Unit Tests, windows-latest
-    if: github.repository_owner == 'storybookjs'
+#    if: github.repository_owner == 'storybookjs'
     runs-on: windows-11-arm
     steps:
-      - uses: samypr100/setup-dev-drive@v3
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
-
       - name: Setup Node.js and Install Dependencies
         uses: ./.github/actions/setup-node-and-install
         with:
           install-code-deps: true
+      - uses: samypr100/setup-dev-drive@v3
+        with:
+          workspace-copy: true
 
       - name: compile
         run: yarn task --task compile --start-from=compile
+        working-directory: ${{ env.DEV_DRIVE_WORKSPACE }}
 
       - name: Install Playwright Dependencies
         run: cd code && yarn exec playwright install chromium --with-deps
+        working-directory: ${{ env.DEV_DRIVE_WORKSPACE }}
 
       - name: test
         run: yarn test
+        working-directory: ${{ env.DEV_DRIVE_WORKSPACE }}
