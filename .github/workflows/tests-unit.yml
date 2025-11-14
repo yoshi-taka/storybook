@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - next
+      - junction
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -16,6 +17,25 @@ jobs:
     if: github.repository_owner == 'storybookjs'
     runs-on: windows-11-arm
     steps:
+      - name: Offload GITHUB_WORKSPACE to D when available
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          if (Test-Path 'D:\') {
+            $ws  = $env:GITHUB_WORKSPACE   # 例: C:\a\_work\storybook\storybook
+            $dst = 'D:\ws'
+
+            # D 側の実体を用意
+            New-Item -ItemType Directory -Force -Path $dst | Out-Null
+
+            # 既存 workspace ディレクトリを消す（空にしてからでないと mklink /J 失敗する）
+            if (Test-Path $ws) {
+              Remove-Item -Recurse -Force $ws
+            }
+
+            # C:\...\s -> D:\ws のジャンクションを作成
+            cmd /c "mklink /J `"$ws`" `"$dst`""
+          }
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
