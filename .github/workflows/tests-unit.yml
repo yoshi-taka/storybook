@@ -34,6 +34,9 @@ jobs:
 
             # C:\...\s -> D:\ws のジャンクションを作成
             cmd /c "mklink /J `"$ws`" `"$dst`""
+
+           "YARN_GLOBAL_FOLDER=D:\yarn-global" >> $env:GITHUB_ENV
+           "PLAYWRIGHT_BROWSERS_PATH=D:\playwright-browsers" >> $env:GITHUB_ENV           
           }
       - uses: actions/checkout@v4
         with:
