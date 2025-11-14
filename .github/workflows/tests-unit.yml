@@ -20,6 +20,7 @@ jobs:
       - name: Offload GITHUB_WORKSPACE to D when available
         shell: pwsh
         run: |
+          Get-PSDrive -PSProvider FileSystem
           if (Test-Path 'D:\') {
             Write-Host "🎯 D: drive is available. Using D for caches."
            "TEMP=D:\temp" >> $env:GITHUB_ENV
