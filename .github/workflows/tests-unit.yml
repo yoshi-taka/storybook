@@ -21,20 +21,10 @@ jobs:
         shell: pwsh
         run: |
           if (Test-Path 'D:\') {
-            $ws  = $env:GITHUB_WORKSPACE   # 例: C:\a\_work\storybook\storybook
-            $dst = 'D:\ws'
-
-            # D 側の実体を用意
-            New-Item -ItemType Directory -Force -Path $dst | Out-Null
-
-            # 既存 workspace ディレクトリを消す（空にしてからでないと mklink /J 失敗する）
-            if (Test-Path $ws) {
-              Remove-Item -Recurse -Force $ws
-            }
-
-            # C:\...\s -> D:\ws のジャンクションを作成
-            cmd /c "mklink /J `"$ws`" `"$dst`""
-
+            Write-Host "🎯 D: drive is available. Using D for caches."
+           "TEMP=D:\temp" >> $env:GITHUB_ENV
+           "TMP=D:\temp"  >> $env:GITHUB_ENV
+           "npm_config_cache=D:\npm-cache" >> $env:GITHUB_ENV
            "YARN_GLOBAL_FOLDER=D:\yarn-global" >> $env:GITHUB_ENV
            "PLAYWRIGHT_BROWSERS_PATH=D:\playwright-browsers" >> $env:GITHUB_ENV           
           }
