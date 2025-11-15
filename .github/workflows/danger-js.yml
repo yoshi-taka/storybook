@@ -26,6 +26,5 @@ jobs:
         with:
           bun-version: "latest"
       - run: bunx danger@13.0.5 ci --dangerfile scripts/dangerfile.ts
-        working-directory: scripts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
