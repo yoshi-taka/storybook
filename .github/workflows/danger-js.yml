@@ -25,9 +25,7 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: "latest"
-      - run: |
-          bun i
-          bun run danger ci
+      - run: bunx danger@14.0.3 ci -- --dangerfile scripts/dangerfile.ts
         working-directory: scripts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
