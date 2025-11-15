@@ -11,6 +11,10 @@ on:
       - main
       - next
 
+permissions:
+  contents: write
+  pull-requests: write
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number }}
   cancel-in-progress: true
