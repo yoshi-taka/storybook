@@ -26,7 +26,7 @@ jobs:
         with:
           bun-version: "latest"
       - run: |
-          bun build dangerfile.ts --outfile dangerfile.js
+          bun build scripts/dangerfile.ts --outfile dangerfile.js
           bunx danger@13.0.4 ci
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
